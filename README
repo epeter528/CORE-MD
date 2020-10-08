@@ -1,0 +1,44 @@
+The tar folder contains three source files, which have to
+be included into the gromacs-4.5.5 source directory. 
+The gromacs-4.5.5 code is available from www.gromacs.org.
+Please cite : B. Hess, C. Kutzner, D. van der Spoel, and E. Lindahl, J. Chem.
+Theory Comput. 4, 435–447 (2008).
+E. Peter, J-E. Shea, A. Schug, J. Chem. Phys. (submitted) (2020).
+
+The three source files should be copied to the following 
+directories of gromacs-4.5.5 :
+
+md.c -> gromacs-4.5.5/src/kernel/
+domdec.c -> gromacs-4.5.5/src/mdlib/
+domdec.h -> gromacs-4.5.5/include/
+
+We configured the Makefiles using :
+
+./configure --enable-mpi --enable-double --prefix=/path-to-core-md-code/ .
+
+We used a local version of fftw3 and set the local paths using
+export LDFLAGS=-L/path-to-fftw3/lib/ and export CPPFLAGS=-I/path-to-fftw3/include/.
+We then ran the command make install-mdrun to generate the executable on 
+/path-to-core-md-code/bin/mdrun_d .
+
+
+In the run-example, we use an external input file with a fixed name called
+'minput'. The file minput has to exist in the simulation folder, from which 
+the simulation gets started. The file 'minput' contains three lines :
+
+1st line, integer : index of the first atom on which the core md algorithm
+is applied.
+2nd line, integer : index of the last atom on which the core md algorithm
+is applied.
+3rd line, float   : The value of the energy parameter alpha. A default parameter
+should lie in the range from > 0 to 5 kJ/mol. 
+
+The tar folder contains additional folders for the two 
+validation cases of TrpCage and dialanine. Each folder contains : an additional 
+run-input file (named minput) and an mdp run-input file, the 
+topology and the starting structure. 
+
+We executed the code by : mpirun -np NUMBER_OF_CORES /path-to-core-md-code/bin/mdrun_d
+-v -s topol.tpr -deffnm trajectory_
+
+
