@@ -1648,7 +1648,7 @@ double do_md(FILE *fplog,t_commrec *cr,int nfile,const t_filenm fnm[],
             if(DOMAINDECOMP(cr)){
 
                  dd_collect_vec(cr->dd,state,f,f_global);
-//                 dd_collect_state(cr->dd,state,state_global);
+                 dd_collect_state(cr->dd,state,state_global);
 
             };
 
